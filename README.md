@@ -1,10 +1,10 @@
 # ark-cli RDP Wrappers
 
-Interactive wrappers around the [CyberArk `ark` CLI](https://docs.cyberark.com/identity-security-platform/Content/Developer/cli-overview.htm) that fetch a short-lived RDP file and immediately open it — available for both Bash (macOS/Linux) and PowerShell (Windows).
+Interactive wrappers around the [CyberArk ark CLI](https://docs.cyberark.com/identity-security-platform/Content/Developer/cli-overview.htm) that fetch a short-lived RDP file and immediately open it — available for both Bash (macOS/Linux) and PowerShell (Windows).
 
 ## Prerequisites
 
-- [`ark` CLI](https://docs.cyberark.com/identity-security-platform/Content/Developer/cli-overview.htm) installed and authenticated
+- [ark CLI](https://docs.cyberark.com/identity-security-platform/Content/Developer/cli-overview.htm) installed
 - **Bash version:** macOS or Linux with Bash 4+; uses `open` to launch the RDP file (macOS default)
 - **PowerShell version:** Windows PowerShell 5.1+ or PowerShell 7+
 

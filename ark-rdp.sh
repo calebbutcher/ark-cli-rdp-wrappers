@@ -69,6 +69,12 @@ if [[ "$CONN_MODE" == "standing" || "$CONN_MODE" == "elevation" ]]; then
   RDP_DOMAIN="${RDP_DOMAIN:-$DEFAULT_DOMAIN}"
 fi
 
+# -- Validate configuration ----------------------------------------------------
+if [[ -z "$OUTPUT_DIR" ]]; then
+  echo "Error: OUTPUT_DIR is not set. Edit the configuration and set it before use."
+  exit 1
+fi
+
 # -- Ensure output directory exists --------------------------------------------
 mkdir -p "$OUTPUT_DIR"
 

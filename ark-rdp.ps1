@@ -49,6 +49,12 @@ if ($ConnMode -eq "standing" -or $ConnMode -eq "elevation") {
     $RdpDomain   = if ($InputDomain) { $InputDomain } else { $DefaultDomain }
 }
 
+# -- Validate configuration ----------------------------------------------------
+if (-not $OutputDir) {
+    Write-Error "Error: `$OutputDir is not set. Edit the configuration and set it before use."
+    exit 1
+}
+
 # -- Ensure output directory exists --------------------------------------------
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 

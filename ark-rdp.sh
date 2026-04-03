@@ -36,10 +36,21 @@ if [[ -z "$TARGET_HOST" ]]; then
   usage
 fi
 
+# -- Validate configuration ----------------------------------------------------
+if [[ -z "$OUTPUT_DIR" ]]; then
+  echo "Error: OUTPUT_DIR is not set. Edit the configuration and set it before use."
+  exit 1
+fi
+
 # -- Prompt for profile name ---------------------------------------------------
 echo ""
 read -rp "Profile name [$PROFILE_NAME]: " INPUT_PROFILE
 PROFILE_NAME="${INPUT_PROFILE:-$PROFILE_NAME}"
+
+if [[ -z "$PROFILE_NAME" ]]; then
+  echo "Error: profile name is required."
+  exit 1
+fi
 
 # -- Prompt for connection type ------------------------------------------------
 echo ""
@@ -67,12 +78,6 @@ if [[ "$CONN_MODE" == "standing" || "$CONN_MODE" == "elevation" ]]; then
 
   read -rp "Domain [$DEFAULT_DOMAIN]: " RDP_DOMAIN
   RDP_DOMAIN="${RDP_DOMAIN:-$DEFAULT_DOMAIN}"
-fi
-
-# -- Validate configuration ----------------------------------------------------
-if [[ -z "$OUTPUT_DIR" ]]; then
-  echo "Error: OUTPUT_DIR is not set. Edit the configuration and set it before use."
-  exit 1
 fi
 
 # -- Ensure output directory exists --------------------------------------------
@@ -106,12 +111,12 @@ case "$CONN_MODE" in
 esac
 
 # -- Open the most recently created file in the output directory ---------------
-LATEST="$(ls -t "$OUTPUT_DIR" | head -n1)"
+LATEST="$(find "$OUTPUT_DIR" -maxdepth 1 -type f -exec stat -f '%m %N' {} \; | sort -n | tail -1 | cut -d' ' -f2-)"
 
 if [[ -z "$LATEST" ]]; then
   echo "Error: No files found in $OUTPUT_DIR after ark exec."
   exit 1
 fi
 
-echo "Opening $OUTPUT_DIR/$LATEST"
-open "$OUTPUT_DIR/$LATEST"
+echo "Opening $LATEST"
+open "$LATEST"

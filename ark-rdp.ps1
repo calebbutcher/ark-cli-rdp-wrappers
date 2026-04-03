@@ -10,16 +10,28 @@ param(
     [string]$TargetHost
 )
 
+$ErrorActionPreference = 'Stop'
+
 # -- Configuration (edit before use) ------------------------------------------
 $ProfileName   = ""
 $DefaultUser   = ""
 $DefaultDomain = ""
 $OutputDir     = ""
 
+# -- Validate configuration ----------------------------------------------------
+if (-not $OutputDir) {
+    Write-Error "Error: `$OutputDir is not set. Edit the configuration and set it before use."
+    exit 1
+}
+
 # -- Prompt for profile name ---------------------------------------------------
 Write-Host ""
 $InputProfile = Read-Host "Profile name [$ProfileName]"
 if ($InputProfile) { $ProfileName = $InputProfile }
+if (-not $ProfileName) {
+    Write-Error "Error: profile name is required."
+    exit 1
+}
 
 # -- Prompt for connection type ------------------------------------------------
 Write-Host ""
@@ -47,12 +59,6 @@ if ($ConnMode -eq "standing" -or $ConnMode -eq "elevation") {
 
     $InputDomain = Read-Host "Domain [$DefaultDomain]"
     $RdpDomain   = if ($InputDomain) { $InputDomain } else { $DefaultDomain }
-}
-
-# -- Validate configuration ----------------------------------------------------
-if (-not $OutputDir) {
-    Write-Error "Error: `$OutputDir is not set. Edit the configuration and set it before use."
-    exit 1
 }
 
 # -- Ensure output directory exists --------------------------------------------
